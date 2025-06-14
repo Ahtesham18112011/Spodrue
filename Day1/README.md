@@ -14,5 +14,4 @@ This workshop teaches the TCL language through a UI (User Interface) software, w
 ## Creating the command
 So now we will create a UNIX shell command that will inform if the `.csv` file is not given, or it does not exists or the user has typed `-help`.
 
-q
 
