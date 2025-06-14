@@ -45,7 +45,32 @@ else
    tclsh ui.tcl $argv[1]
 
 endif
+
 ```
+
+1. **Shebang Line (`#!/bin/tcsh -f`)**  
+   - Specifies that the script should be executed using `tcsh` (a variant of the C shell).
+   - The `-f` flag prevents automatic loading of `.tcshrc`, speeding execution.
+
+2. **Argument Check (`if ($#argv == 0) then …`)**  
+   - If **no arguments** are provided, the script prints an error message and exits.
+
+3. **File Validation (`if (! -f $argv[1] || $argv[1] == "-help") then …`)**  
+   - If the provided argument **is not a file**, or the user requests help (`-help`):
+     - If it's **not `-help`**, print an error and exit.
+     - Otherwise, provide guidance: `"Type the command ./ui.tcsh and write the csv file aside"` and exit.
+
+4. **Executing the Tcl Script (`tclsh ui.tcl $argv[1]`)**  
+   - If the input file **exists**, it runs `ui.tcl` with the CSV file as an argument.
+
+
+
+
+
+
+
+
+
 
 
 
