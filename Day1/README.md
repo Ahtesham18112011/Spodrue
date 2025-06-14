@@ -12,6 +12,16 @@ This workshop teaches the TCL language through a UI (User Interface) software, w
 1. Create command (for example vsdsynth) and pass `.csv` from UNIX shell to TCL script.
 
 ## Creating the command
+To create command type this in the terminal:-
+```bash
+touch myfile.tcsh
+```
+Then change the permission by typing :-
+```bash
+chmod -R 777 myscript.tcsh
+```
+Then edit the file through ane ditor like vim, nano etc.
+## Shell code for verifying the input `.csv` file
 So now we will create a UNIX shell command that will inform if the `.csv` file is not given, or it does not exists or the user has typed `-help`. And if all the necessary files are given to the software it will throw the csv file to the TCL script.
 
 ```tcsh
