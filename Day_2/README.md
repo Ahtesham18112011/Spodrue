@@ -11,6 +11,8 @@ It defines critical parameters such as:
 
 The file uses a syntax based on TCL (Tool Command Language), and it helps ensure that the final chip meets performance, power, and area goals.
 
+---
+
 So, in this task we need to convert the `.csv` file to the SDC file through TCL, below is the code for doing this:-
 
 ```tcl
@@ -100,5 +102,11 @@ puts "number of columns = $number_of_columns"
 set clock_start_rows [lindex [lindex [constraints search all CLOCKS] 0 ] 1]
 set input_ports_start [lindex [lindex [constraints search all INPUTS] 0] 1]
 set output_ports_start [lindex [lindex [constraints search all OUTPUTS] 0] 1]
+set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0]
+
+
+
+
+
 set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0
 ```
