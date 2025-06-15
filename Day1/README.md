@@ -64,6 +64,15 @@ endif
    - If the input file **exists**, it runs `ui.tcl` with the CSV file as an argument.
 
 
+### Run in Terminal
+
+Run the command to run the UI in the Ubuntu terminal
+
+```bash
+./myfile.tcsh you_csv_file.csv
+```
+
+![WhatsApp Image 2025-06-15 at 11 30 17](https://github.com/user-attachments/assets/bc70b982-5a01-4e9d-aa97-4a71063efafe)
 
 
 
