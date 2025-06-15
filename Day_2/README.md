@@ -102,5 +102,119 @@ puts "number of columns = $number_of_columns"
 set clock_start_rows [lindex [lindex [constraints search all CLOCKS] 0 ] 1]
 set input_ports_start [lindex [lindex [constraints search all INPUTS] 0] 1]
 set output_ports_start [lindex [lindex [constraints search all OUTPUTS] 0] 1]
-set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0]
+set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0
 ```
+
+
+---
+
+###  **1. Setup and CSV Reading**
+```tcl
+set filename [lindex $argv 0]
+package require csv
+package require struct::matrix
+struct::matrix m
+```
+- `filename`: grabs the first argument from the command line (your CSV file).
+- The `csv` and `struct::matrix` packages are required to parse CSV data into a matrix.
+
+```tcl
+set f [open $filename r]
+csv::read2matrix $f m , auto
+close $f
+```
+- Opens the file and reads it into matrix `m` using a comma (`,`) as the separator.
+
+---
+
+###  **2. Processing CSV Key-Value Pairs**
+```tcl
+m link my_arr
+set num_of_rows [m rows]
+```
+- Links the matrix content to an array `my_arr` for easy access: `my_arr(column,row)`.
+
+```tcl
+while {$i < $num_of_rows} {
+    ...
+    set i [expr {$i+1}]
+}
+```
+- Iterates over rows. It reads the CSV as key-value pairs: sets variables named after the keys (from column 0) to corresponding values (from column 1).
+- Spaces in keys are stripped using `string map`.
+
+It also normalizes file paths starting from row 1, likely skipping normalization for `DesignName`.
+
+---
+
+###  **3. Echo Configuration Variables**
+```tcl
+puts "DesignName = $DesignName"
+puts "OutputDirectory = $OutputDirectory"
+...
+```
+- Prints the values stored from the CSV. These become variables like `DesignName`, `OutputDirectory`, `NetlistDirectory`, etc.
+
+---
+
+###  **4. Check for Required Directories**
+```tcl
+if {![file isdirectory $OutputDirectory]} {
+    ...
+}
+```
+- Checks if certain directories exist. If `OutputDirectory` doesn't exist, it creates it.
+- If others are missing (like Netlist or Library paths), it just reports errors.
+
+---
+
+###  **5. Parse SDC Constraints CSV**
+```tcl
+::struct::matrix constraints
+set chan [open $ConstraintsFile]
+csv::read2matrix $chan constraints  , auto
+close $chan
+```
+- Loads the constraints CSV into a new matrix `constraints`.
+
+```tcl
+puts "number of rows = ..."
+```
+- Gives basic info on the matrix dimensions.
+
+---
+
+###  **6. Locate Specific Constraint Sections**
+```tcl
+set clock_start_rows ...
+set input_ports_start ...
+set output_ports_start ...
+set clock_start_columns ...
+```
+- Uses `constraints search all ...` to find where sections like `CLOCKS`, `INPUTS`, and `OUTPUTS` begin.
+- `search all` returns a list of `{col row}` index pairs. The script grabs the *first match* using nested `lindex`.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
