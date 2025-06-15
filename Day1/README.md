@@ -64,7 +64,7 @@ endif
    - If the input file **exists**, it runs `ui.tcl` with the CSV file as an argument.
 
 
-### Run in Terminal
+## Run in Terminal
 
 Run the command to run the UI in the Ubuntu terminal
 
