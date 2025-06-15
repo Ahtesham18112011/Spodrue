@@ -13,7 +13,7 @@ The file uses a syntax based on TCL (Tool Command Language), and it helps ensure
 
 ---
 
-So, in this task we need to convert the `.csv` file to the SDC file through TCL, below is the code for doing this:-
+So, in this task we need to convert the files present in `.csv` file in rows and columns, check if the files exists or not, and convert `.csv` constraints file to the SDC file through TCL, below is the code for doing these:-
 
 ```tcl
 #!/usr/bin/env tclsh
