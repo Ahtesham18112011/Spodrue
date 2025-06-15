@@ -103,10 +103,4 @@ set clock_start_rows [lindex [lindex [constraints search all CLOCKS] 0 ] 1]
 set input_ports_start [lindex [lindex [constraints search all INPUTS] 0] 1]
 set output_ports_start [lindex [lindex [constraints search all OUTPUTS] 0] 1]
 set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0]
-
-
-
-
-
-set clock_start_columns [lindex [lindex [constraints search all CLOCKS] 0] 0
 ```
