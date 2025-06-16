@@ -68,6 +68,119 @@ looping over clock rows (from `$clock_start+1` to just before `$input_ports_star
 
 ---
 
+## Converting input to `.sdc` format
+Below is the tcl code for doing so:-
+
+```tcl
+
+```
+
+
+set input_early_rise_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_rise_delay] 0 ] 0]
+set input_early_fall_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_fall_delay] 0 ] 0]
+set input_late_rise_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] late_rise_delay] 0 ] 0]
+set input_late_fall_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] late_fall_delay] 0 ] 0]
+set input_early_rise_slew_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_rise_slew] 0 ] 0]
+set input_early_fall_slew_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_fall_slew] 0 ] 0]
+set input_late_rise_slew_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] late_rise_slew] 0 ] 0]
+set input_late_fall_slew_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] late_fall_slew] 0 ] 0]
+set related_clock [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] clocks] 0 ] 0]
+
+set i [expr {$input_ports_start+1}]
+set end_of_inputs [expr {$output_ports_start-1}]
+puts "\nworking on input constraints"
+puts "\nCategorizing input ports as bits and busses"
+
+#while loop to write input constraints to the sdc file--#
+
+while { $i < $end_of_inputs } {
+set netlist [glob -dir $NetlistDirectory *.v]
+set tmp_file [open /tmp/1 w]
+foreach f $netlist {
+set fd [open $f]
+while { [gets $fd line] != -1 } {
+set pattern1 " [constraints get cell 0 $i];"
+if { [regexp -all -- $pattern1 $line] } {
+set pattern2 [lindex [split $line ";"] 0]
+if { [regexp -all {input} [lindex [split $pattern2 "\S+"] 0]] } {
+set s1 "[lindex [split $pattern2 "\S+"] 0] [lindex [split $pattern2 "\S+"] 1] [lindex [split $pattern2 "\S+"] 2]"
+puts -nonewline $tmp_file "\n[regsub -all {\s+} $s1 " "]"
+}
+}
+}
+close $fd
+}
+close $tmp_file
+
+set tmp_file [open /tmp/1 r]
+set tmp2_file [open /tmp/2 w]
+puts -nonewline $tmp2_file "[join [lsort -unique [split [read $tmp_file] \n]] \n]"
+close $tmp_file
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+set count [llength [read $tmp2_file]]
+close $tmp2_file
+if {$count > 2} {
+set inp_ports [concat [constraints get cell 0 $i]*]
+#puts "Info: Working on input bus $inp_ports for user debug"
+} else {
+set inp_ports [constraints get cell 0 $i]
+#puts "Info : Working on input bit $inp_ports for user debug"
+}
+        puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -rise -source_latency_included [constraints get cell $input_early_rise_delay_start$
+        puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -fall -source_latency_included [constraints get cell $input_early_fall_delay_start$
+        puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -max -rise -source_latency_included [constraints get cell $input_late_rise_delay_start $
+        puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -max -fall -source_latency_included [constraints get cell $input_late_fall_delay_start $
+
+        puts -nonewline $sdc_file "\nset_input_transition -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -rise -source_latency_included [constraints get cell $input_early_rise_slew_s$
+        puts -nonewline $sdc_file "\nset_input_transition -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -fall -source_latency_included [constraints get cell $input_early_fall_slew_s$
+        puts -nonewline $sdc_file "\nset_input_transition -clock \[get_clocks [constraints get cell $related_clock $i]\] -max -rise -source_latency_included [constraints get cell $input_late_rise_slew_st$
+        puts -nonewline $sdc_file "\nset_input_transition -clock \[get_clocks [constraints get cell $related_clock $i]\] -max -fall -source_latency_included [constraints get cell $input_late_fall_slew_st$
+
+
+        set i [expr {$i+1}]
+}
+
+
+### Analysis
+
+1. **Initialization of Variables:**
+   - using `constraints search rect` to extract various delay and slew values (early/late, rise/fall) from a design matrix and store them for later use.
+   - Also grabbing the `related_clock`, which is essential for setting accurate timing constraints.
+
+2. **Port Looping:**
+   - The `while` loop iterates over input port indices (`$i`) to apply these constraints for each individual input or input bus (bit vs bus logic).
+   - Ports are being categorized based on how many matches show up in a temporary parsed list of inputs in your netlist (based on file content heuristics).
+
+3. **Constraint Application:**
+   - Uses `set_input_delay` with `-min` and `-max` for both rising and falling transitions.
+   - Similarly, it applies `set_input_transition` with delay values sourced from the variables set at the start.
+
+4. **Temporary Files & Parsing:**
+   - Parses Verilog netlists to identify inputs and avoid duplicates.
+   - Generates temporary files to filter and sort unique port names before writing corresponding constraints.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
