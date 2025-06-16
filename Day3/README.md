@@ -42,16 +42,13 @@ set i [expr {$i+1}]
 
 ```tcl
 set clock_early_rise_delay_start [...]
-...
+```
 set clock_late_fall_slew_start [...]
 
 - **Delay** (early/late, rise/fall)
 - **Slew** (early/late, rise/fall)
 
 
-
-
----
 
 ###  **Part 2: Prepare to Write to an SDC File**
 ```tcl
