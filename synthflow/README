@@ -1,4 +1,4 @@
-Read below instructions to run "vsdsynth" on your machine
+Read below instructions to run "synthflow" on your machine
 
 1) Make sure you install "opentimer" and "yosys" opensource EDA tools before running "vsdsynth". Installation detail video can be found in below link:
 https://www.udemy.com/vsd-a-complete-guide-to-install-open-source-eda-tools/ (FREE course)
@@ -18,8 +18,4 @@ https://www.udemy.com/vsd-tcl-programming-from-novice-to-expert/
 TCL programming - Part 2:
 https://www.udemy.com/vsd-tcl-programming-from-novice-to-expert-part-2/
 
-#---------------------------------------------------------------------#
-"vsdsynth" is Developed and Maintained by VLSI System Design Corporation Pvt. Ltd.
-For any queries and bugs, please drop a mail to kunalpghosh@gmail.com
-#---------------------------------------------------------------------#
 
