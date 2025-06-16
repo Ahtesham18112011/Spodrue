@@ -1,6 +1,10 @@
 # Day 3: Processing Clocks and Input constraints
 In this day we learned to read the constraints file and convert it to the `.sdc` format using TCL
 
+## Constraints file
+![Screenshot from 2025-06-16 20-33-27](https://github.com/user-attachments/assets/b40adb40-367f-4736-99a5-55ef05d3d90d)
+
+
 ## Coverting clock inputs as `.sdc` format
 To do this just type the below command after the last tcl script:-
 
@@ -66,6 +70,16 @@ while { $i < $end_of_ports } {
 looping over clock rows (from `$clock_start+1` to just before `$input_ports_start`) to write constraints for each individual clock.
 
 ---
+
+## Running in terminal and obseving output in the `.sdc` file
+Run in terminal:-
+```bash
+./myscript.tcl your_csv_file.csv
+```
+View in the sdc file
+
+![Screenshot from 2025-06-16 20-31-05](https://github.com/user-attachments/assets/74e0fb89-14fa-4698-8669-8921c303b7fa)
+
 
 ## Converting input to `.sdc` format
 Below is the tcl code for doing so:-
