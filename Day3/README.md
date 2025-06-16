@@ -34,7 +34,6 @@ puts -nonewline $sdc_file "\nset_clock_transition -fall -min [constraints get ce
 set i [expr {$i+1}]
 
 }
-
 ```
 
 
@@ -72,10 +71,6 @@ looping over clock rows (from `$clock_start+1` to just before `$input_ports_star
 Below is the tcl code for doing so:-
 
 ```tcl
-
-```
-
-
 set input_early_rise_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_rise_delay] 0 ] 0]
 set input_early_fall_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] early_fall_delay] 0 ] 0]
 set input_late_rise_delay_start [lindex [lindex [constraints search rect $clock_start_columns $input_ports_start [expr {$number_of_columns-1}] [expr {$output_ports_start-1}] late_rise_delay] 0 ] 0]
@@ -140,23 +135,23 @@ set inp_ports [constraints get cell 0 $i]
 
         set i [expr {$i+1}]
 }
-
+```
 
 ### Analysis
 
-1. **Initialization of Variables:**
+### Part 1: **Initialization of Variables:**
    - using `constraints search rect` to extract various delay and slew values (early/late, rise/fall) from a design matrix and store them for later use.
    - Also grabbing the `related_clock`, which is essential for setting accurate timing constraints.
 
-2. **Port Looping:**
+### Part 2: **Port Looping:**
    - The `while` loop iterates over input port indices (`$i`) to apply these constraints for each individual input or input bus (bit vs bus logic).
    - Ports are being categorized based on how many matches show up in a temporary parsed list of inputs in your netlist (based on file content heuristics).
 
-3. **Constraint Application:**
+### Part 3: **Constraint Application:**
    - Uses `set_input_delay` with `-min` and `-max` for both rising and falling transitions.
    - Similarly, it applies `set_input_transition` with delay values sourced from the variables set at the start.
 
-4. **Temporary Files & Parsing:**
+### Part 4: **Temporary Files & Parsing:**
    - Parses Verilog netlists to identify inputs and avoid duplicates.
    - Generates temporary files to filter and sort unique port names before writing corresponding constraints.
 
