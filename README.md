@@ -32,7 +32,7 @@ This repository has a brief introduction to the Tool Command Language (TCL) and 
 
 ```bash
 git clone https://github.com/Ahtesham18112011/TCL_Workshop.git
-cd TCL
+cd TCL_Workshop
 ```
 
 ## License
