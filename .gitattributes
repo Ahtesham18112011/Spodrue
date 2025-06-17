@@ -1,1 +1,1 @@
-*.v linguist-vendored
+synthflow/verilog/** linguist-vendored
