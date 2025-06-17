@@ -1,1 +1,1 @@
-synthflow/verilog linguist-vendored
+synthflow/verilog/* linguist-detectable=false
