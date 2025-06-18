@@ -77,11 +77,102 @@ close $sdc_file
 ```
 
 
+---
+
+### **1. Variable Definitions for Output Constraints**
+The script begins by defining variables that store column indices for various output-related constraints in a constraint data structure (likely a spreadsheet or table). The `constraints search rect` command searches a rectangular region of the data structure defined by:
+- Columns: From `$clock_start_columns` to `$number_of_columns-1`.
+- Rows: From `$output_ports_start` to `$number_of_rows-1`.
+
+The variables are:
+- `output_erd_start`: Column index for **early rise delay** values.
+- `output_efd_start`: Column index for **early fall delay** values.
+- `output_lrd_start`: Column index for **late rise delay** values.
+- `output_lfd_start`: Column index for **late fall delay** values.
+- `output_related_clock`: Column index for the **clock** associated with output ports.
+- `output_load_start`: Column index for the **load** (capacitance) values for output ports.
+
+These variables are set using the `lindex` command to extract the first element (index 0) from the result of the `constraints search rect` command, which returns a list of lists.
+
+**Example:**
+```tcl
+set output_erd_start [lindex [lindex [constraints search rect $clock_start_columns $output_ports_start [expr {$number_of_columns-1}] [expr {$number_of_rows-1}] early_rise_delay] 0 ] 0]
+```
+This retrieves the column index for the `early_rise_delay` constraint for output ports.
+
+---
+
+### **2. Loop Setup for Processing Output Ports**
+The script sets up a loop to iterate over the rows of output ports, starting from row `$output_ports_start + 1` (skipping the header row) to `$number_of_rows - 1` (the last row of the output section).
+
+```tcl
+set i [expr {$output_ports_start+1}]
+set end_of_outputs [expr {$number_of_rows-1}]
+```
+
+The loop processes each row in the output section of the constraint data structure, extracting information about output ports and their associated constraints.
+
+---
+
+### **3. Categorizing Output Ports (Bits vs. Busses)**
+For each row (`$i`), the script determines whether the output port is a single **bit** or a **bus** (a group of bits). This is done by analyzing Verilog netlist files in the `$NetlistDirectory` directory.
+
+#### **Steps:**
+1. **Read Netlist Files**:
+   - The script uses `glob` to collect all `.v` (Verilog) files in `$NetlistDirectory`.
+   - For each file, it searches for lines containing the output port name (obtained via `constraints get cell 0 $i`) followed by a semicolon (`;`).
+
+2. **Pattern Matching**:
+   - The pattern ` [constraints get cell 0 $i];` is used to find lines in the Verilog file that define the output port.
+   - If a line contains the keyword `output`, the script extracts the portion before the semicolon and processes it to identify the port definition.
+
+3. **Temporary File Creation**:
+   - The script writes the processed output port definitions to a temporary file (`/tmp/1`).
+   - It removes extra whitespace and writes the cleaned-up definitions to the file.
+
+4. **Sorting and Counting Unique Entries**:
+   - The temporary file (`/tmp/1`) is read, and its contents are sorted and made unique (using `lsort -unique`).
+   - The sorted output is written to another temporary file (`/tmp/2`).
+   - The number of unique entries is counted to determine if the port is a bus or a single bit.
+
+5. **Port Classification**:
+   - If the count of unique entries (`$count`) is greater than 2, the port is treated as a **bus**, and the script appends a wildcard (`*`) to the port name: `[constraints get cell 0 $i]*`.
+   - Otherwise, it is treated as a single **bit**, and the port name is used as-is: `[constraints get cell 0 $i]`.
+
+**Example Output**:
+- For a bus: `my_port[7:0]`
+- For a bit: `my_port`
+
+---
+
+### **4. Generating SDC Commands for Output Delays**
+For each output port (row `$i`), the script generates `set_output_delay` commands to specify the timing constraints relative to a clock. These commands are written to the `$sdc_file`.
+
+#### **Commands Generated**:
+The script generates four `set_output_delay` commands per output port, covering:
+- **Minimum rise delay** (`-min -rise`): Uses the value from the `early_rise_delay` column.
+- **Minimum fall delay** (`-min -fall`): Uses the value from the `early_fall_delay` column.
+- **Maximum rise delay** (`-max -rise`): Uses the value from the `late_rise_delay` column.
+- **Maximum fall delay** (`-max -fall`): Uses the value from the `late_fall_delay` column.
+
+Each command references:
+- The clock associated with the output port (from the `output_related_clock` column, accessed via `constraints get cell $output_related_clock $i`).
+- The delay value (from the respective delay column, e.g., `constraints get cell $output_erd_start $i`).
+- The output port(s) (`$op_ports`), which could be a single bit or a bus.
 
 
 
+## Running in the terminal
+
+Successfully run in the terminal
+
+![Screenshot from 2025-06-18 11-59-53](https://github.com/user-attachments/assets/933ed2eb-9c05-406d-81a6-5bdea372eafa)
 
 
+
+## Observing the SDC file
+
+[This](https://github.com/Ahtesham18112011/TCL_Workshop/blob/main/synthflow/outdir_openMSP430/openMSP430.sdc) is the full SDC file.
 
 
 
