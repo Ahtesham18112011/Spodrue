@@ -240,8 +240,77 @@ close $fileid
    close $fileid
    ```
    This writes the `hierarchy -check` command, which ensures that the design hierarchy is complete and valid. Then, it closes the file.
+   
+![Screenshot from 2025-06-18 17-16-14](https://github.com/user-attachments/assets/48b2e824-4f50-49e8-98ae-69563664fcad)
 
 ## Error handling script for hierarchy check
+
+```tcl
+set error_flag [catch {exec yosys -s $OutputDirectory/$DesignName.hier.ys >& $OutputDirectory/$DesignName.hierarchy_check.log} msg]
+if {$error_flag} {
+set filename "$OutputDirectory/$DesignName.hierarchy_check.log"
+set pattern {referenced in module}
+set count
+set fid [open $filename r]
+while {[gets $fid line] != -1} {
+incr count [regexp -all -- $pattern $line]
+if {[regexp -all -- $pattern $line]} {
+puts "\nError: module [lindex $line 2] is not part of design $DesignName. Please correct RTL in the path '$NetlistDirectory'" puts "\nInfo: Hierarchy check FAIL"
+}
+} close $fid
+
+} else {
+}
+puts "\nInfo: Hierarchy check PASS"
+puts "\nInfo: Please find hierarchy check details in [file normalize $OutputDirectory/$DesignName.hierarchy_check.log] for more info"
+```
+This Tcl script is part of a flow for checking the module hierarchy of a hardware design using **Yosys**, a synthesis tool. Here's a breakdown of what it's doing:
+
+---
+
+## What the Script Does
+
+1. **Runs the Hierarchy Script via Yosys**
+   ```tcl
+   set error_flag [catch {exec yosys -s $OutputDirectory/$DesignName.hier.ys >& $OutputDirectory/$DesignName.hierarchy_check.log} msg]
+   ```
+   - This line executes a Yosys script (`*.hier.ys`) and captures any errors in a log file.
+   - If there's an error during execution, `catch` will set `error_flag` to true.
+
+2. **If There’s an Error...**
+   The script reads through the generated log:
+   ```tcl
+   set pattern {referenced in module}
+   ```
+   - It looks for lines containing the string “referenced in module”, which suggests some modules are used in your design but not defined anywhere—common in hierarchy issues.
+
+3. **For Each Matching Line...**
+   ```tcl
+   puts "\nError: module [lindex $line 2] is not part of design $DesignName..."
+   ```
+   - It reports which module is missing from the design and suggests fixing the RTL in the specified path.
+
+4. **If No Errors**
+   ```tcl
+   puts "\nInfo: Hierarchy check PASS"
+   ```
+   - If Yosys completes without errors, it assumes the hierarchy is good.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
