@@ -241,6 +241,7 @@ close $fileid
    ```
    This writes the `hierarchy -check` command, which ensures that the design hierarchy is complete and valid. Then, it closes the file.
 
+## Error handling script for hierarchy check
 
 
 
