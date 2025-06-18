@@ -1,6 +1,6 @@
 
 # Day 1: Introduction to TCL and VSDSYNTH Tool Box Usage
-This day introduces us to the **Tool Command Language (TCL)** and explains us the usage of the TCL langiage.
+This day introduces us to the **Tool Command Language (TCL)** and explains us the usage of the TCL language.
 
 ## What is TCL language?
 **Tcl (Tool Command Language)** is a high-level, general-purpose, interpreted programming language designed for simplicity and flexibility. It follows a multi-paradigm approach, supporting **event-driven, functional, imperative, and object-oriented programming**. 
