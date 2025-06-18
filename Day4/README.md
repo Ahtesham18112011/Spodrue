@@ -179,7 +179,7 @@ Successfully run in the terminal
 
 Yosys is an open-source framework for Verilog RTL (Register-Transfer Level) synthesis. It’s a tool used in digital design to convert high-level hardware descriptions (written in Verilog) into a gate-level representation or netlist, which can be used for further processing in FPGA (Field-Programmable Gate Array) or ASIC (Application-Specific Integrated Circuit) design flows. Yosys supports a wide range of synthesis tasks, including logic optimization, technology mapping, and formal verification, and is highly extensible through its modular architecture and scripting capabilities.
 
-<img src="https://github.com/user-attachments/assets/025951e7-f29e-4448-9376-07dfaf5f9145" alt="description" width="300"/>
+<img src="https://github.com/user-attachments/assets/025951e7-f29e-4448-9376-07dfaf5f9145" alt="description" width="750"/>
 
 
 
