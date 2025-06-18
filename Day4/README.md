@@ -181,8 +181,65 @@ Yosys is an open-source framework for Verilog RTL (Register-Transfer Level) synt
 
 <img src="https://github.com/user-attachments/assets/025951e7-f29e-4448-9376-07dfaf5f9145" alt="description" width="550"/>
 
+## Script for hierarchy check
 
+Below is the script for a hierarchy check before using Yosys:-
 
+```tcl
+puts "\nInfo:Creating hierarchy check script to be used by Yosys"
+set data "read_liberty -lib -ignore_miss_dir -setattr blackbox ${LateLibraryPath}"
+set filename "$DesignName.hier.ys"
+set fileid [open $OutputDirectory/$filename "w"]
+puts -nonewline $fileid $data
+
+set netlist [glob -dir $NetlistDirectory *.v]
+foreach f $netlist {
+set data $f
+puts -nonewline $fileid "\nread_verilog $f"
+}
+
+puts -nonewline $fileid "\nhierarchy -check"
+close $fileid
+
+```
+1. **Logging a message**  
+   ```tcl
+   puts "\nInfo:Creating hierarchy check script to be used by Yosys"
+   ```
+   This just prints a message to the terminal or log to let the user know that the script generation has started.
+
+2. **Setting up a command to read a Liberty file**  
+   ```tcl
+   set data "read_liberty -lib -ignore_miss_dir -setattr blackbox ${LateLibraryPath}"
+   ```
+   This command tells Yosys to load a Liberty file containing standard cell information, which is crucial for synthesis. The options:
+   - `-lib`: marks it as a standard cell library
+   - `-ignore_miss_dir`: ignores missing directional information
+   - `-setattr blackbox`: marks each module as a blackbox
+
+3. **Creating a new Yosys script file**  
+   ```tcl
+   set filename "$DesignName.hier.ys"
+   set fileid [open $OutputDirectory/$filename "w"]
+   puts -nonewline $fileid $data
+   ```
+   This section names the script file, opens it for writing, and writes the Liberty load command into it.
+
+4. **Adding read commands for each Verilog file**  
+   ```tcl
+   set netlist [glob -dir $NetlistDirectory *.v]
+   foreach f $netlist {
+       puts -nonewline $fileid "\nread_verilog $f"
+   }
+   ```
+   It loops through all `.v` Verilog files in the specified directory and appends a `read_verilog` command for each one into the Yosys script.
+
+5. **Finalizing the script with a hierarchy check**  
+   ```tcl
+   puts -nonewline $fileid "\nhierarchy -check"
+   close $fileid
+   ```
+   This writes the `hierarchy -check` command, which ensures that the design hierarchy is complete and valid. Then, it closes the file.
 
 
 
