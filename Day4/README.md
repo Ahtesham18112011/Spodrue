@@ -175,8 +175,17 @@ Successfully run in the terminal
 [This](https://github.com/Ahtesham18112011/TCL_Workshop/blob/main/synthflow/outdir_openMSP430/openMSP430.sdc) is the full SDC file.
 
 
+# What is Yosys?
 
+Yosys is an open-source framework for Verilog RTL (Register-Transfer Level) synthesis. It’s a tool used in digital design to convert high-level hardware descriptions (written in Verilog) into a gate-level representation or netlist, which can be used for further processing in FPGA (Field-Programmable Gate Array) or ASIC (Application-Specific Integrated Circuit) design flows. Yosys supports a wide range of synthesis tasks, including logic optimization, technology mapping, and formal verification, and is highly extensible through its modular architecture and scripting capabilities.
 
+graph TD
+    A[RTL Input<br>(Verilog/SystemVerilog)] --> B[Yosys Parsing<br>(Convert to RTLIL)]
+    B --> C[Elaboration<br>(Resolve Hierarchy)]
+    C --> D[High-Level Optimization<br>(Constant Folding, etc.)]
+    D --> E[Technology Mapping<br>(Map to FPGA/ASIC Primitives)]
+    E --> F[Low-Level Optimization<br>(Logic Minimization, ABC)]
+    F --> G[Output Generation<br>(Netlist: Verilog/BLIF/EDIF<br>or Diagram Data)]
 
 
 
