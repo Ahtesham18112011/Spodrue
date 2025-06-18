@@ -295,6 +295,8 @@ This Tcl script is part of a flow for checking the module hierarchy of a hardwar
    puts "\nInfo: Hierarchy check PASS"
    ```
    - If Yosys completes without errors, it assumes the hierarchy is good.
+  
+[Here](https://github.com/Ahtesham18112011/TCL_Workshop/blob/main/synthflow/outdir_openMSP430/openMSP430.hierarchy_check.log) is the log for error checking 
 
 ---
 
