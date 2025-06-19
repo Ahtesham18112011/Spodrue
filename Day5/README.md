@@ -127,7 +127,7 @@ puts -nonewline $output [string map {"\\" ""} $line]
 ---
 
 
-# '*World Of Procs*'
+# *World Of 'Procs'*
 
 In Tcl, a **proc** is a *procedure*—essentially a named block of code that you define once and can reuse wherever needed. It allows you to organize code into modular, reusable components.
 
@@ -162,7 +162,6 @@ proc add {a b} {
 }
 ```
 
-`
 ---
 
 
