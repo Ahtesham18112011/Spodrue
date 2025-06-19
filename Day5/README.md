@@ -88,9 +88,9 @@ puts "$OutputDirectory/$DesignName.final.synth.v"
 
 
 ```
-You're adding the final layer to your synthesis automation—executing the synthesis, checking its success, and post-processing the resulting netlist. Here's a breakdown of what your script does:
 
----
+
+
 
 ### 1. **Running the Yosys Synthesis Flow**
 ```tcl
