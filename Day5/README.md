@@ -165,7 +165,7 @@ proc add {a b} {
 ---
 
 ## Examples of *'Procs'*
-
+**1. Reopen stdout**
 ```tcl
 proc reopenStdout {file} {
     close stdout
@@ -180,6 +180,9 @@ This Tcl procedure `reopenStdout` is meant to redirect standard output (`stdout`
 
 
 ---
+
+
+**2. `set_multi_cpu_usage` command**
 
 ```tcl
 proc set_multi_cpu_usage {args} {
@@ -221,7 +224,7 @@ It processes command-line style options from the `args` list and executes comman
 
 ---
 
-### How It Works (Line by Line)
+### How It Works 
 
 1. **`array set options {-localCpu <num_of_threads> -help "" }`**  
    Initializes the `options` array with expected keys and their placeholders.
@@ -241,6 +244,90 @@ It processes command-line style options from the `args` list and executes comman
    - Similarly, removes `-help` from `args` and outputs usage instructions.
 
 ---
+
+**3. `read_lib` command**
+
+```tcl
+proc read_lib args {
+	array set options {-late <late_lib_path> -early <early_lib_path> -help ""}
+	while {[llength $args]} {
+		switch -glob -- [lindex $args 0] {
+		-late {
+			set args [lassign $args - options(-late) ]
+			puts "set_late_celllib_fpath $options(-late)"
+		      }
+		-early {
+			set args [lassign $args - options(-early) ]
+			puts "set_early_celllib_fpath $options(-early)"
+		       }
+		-help {
+			set args [lassign $args - options(-help) ]
+			puts "Usage: read_lib -late <late_lib_path> -early <early_lib_path>"
+			puts "-late <provide late library path>"
+			puts "-early <provide early library path>"
+		      }	
+		default break
+		}
+	}
+}
+```
+
+
+###  **Purpose**
+
+To **handle command-line-style flags** for specifying late and early liberty file paths, which are typically needed for setup/hold timing analysis or multi-corner characterization.
+
+
+### Explanation
+
+1. **`array set options {-late <late_lib_path> -early <early_lib_path> -help ""}`**  
+   - Initializes an associative array `options` with default values for expected flags.
+   - The placeholders `<late_lib_path>` and `<early_lib_path>` are just stand-ins until actual values are parsed.
+
+2. **`while {[llength $args]}`**  
+   - Loops while there are arguments left to process in the `args` list.
+
+3. **`switch -glob -- [lindex $args 0]`**  
+   - Checks the first element in the current `args` list to see which flag is provided.
+
+4. **Flag Handlers:**
+
+   - `-late`:  
+     - Uses `lassign` to pop the flag and value, storing the value into `options(-late)`.
+     - Prints: `set_late_celllib_fpath <path>`
+
+   - `-early`:  
+     - Same as above, but for early library path.
+     - Prints: `set_early_celllib_fpath <path>`
+
+   - `-help`:  
+     - Prints usage instructions and descriptions for each flag.
+
+   - `default`:  
+     - If an unrecognized flag is encountered, the loop exits via `break`.
+
+---
+
+4. `read_verilog` command
+
+```tcl
+proc read_verilog {arg1} {
+puts "set_verilog_fpath $arg1"
+}
+```
+
+### Explanation
+This simply puts the command "set_verilog_fpath $arg1"
+
+
+---
+
+
+
+
+
+
+
 
 
 
