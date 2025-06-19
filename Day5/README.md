@@ -92,7 +92,7 @@ You're adding the final layer to your synthesis automation—executing the synth
 
 ---
 
-### 🛠 1. **Running the Yosys Synthesis Flow**
+### 1. **Running the Yosys Synthesis Flow**
 ```tcl
 if {[catch {exec yosys -s $OutputDirectory/$DesignName.ys >& $OutputDirectory/$DesignName.synthesis.log} msg]} { ... }
 ```
