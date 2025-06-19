@@ -166,7 +166,7 @@ proc add {a b} {
 
 ## Examples of *'Procs'*
 
-```proc
+```tcl
 proc reopenStdout {file} {
     close stdout
     open $file w       
