@@ -129,5 +129,48 @@ puts -nonewline $output [string map {"\\" ""} $line]
 
 # '*World Of Procs*'
 
+In Tcl, a **proc** is a *procedure*—essentially a named block of code that you define once and can reuse wherever needed. It allows you to organize code into modular, reusable components.
 
+**Formal definition:**  
+A *proc* in Tcl is a user-defined command that encapsulates a sequence of commands and can accept input parameters. It promotes cleaner, maintainable code by abstracting logic into callable routines.
 
+### Basic Syntax:
+```tcl
+proc name {arg1 arg2 ...} {
+    body
+}
+```
+
+- `name` is the name of your procedure.
+- The arguments are the parameters it expects.
+- The `body` is the block of Tcl code that runs when the procedure is called.
+
+### Example:
+```tcl
+proc greet {name} {
+    puts "Hello, $name!"
+}
+greet "Ahtesham"
+```
+This would output: `Hello, Ahtesham!`
+
+### Return Values
+By default, the *last evaluated expression* in a proc is returned, but you can also explicitly return a value:
+```tcl
+proc add {a b} {
+    return [expr {$a + $b}]
+}
+```
+
+### Default Arguments:
+Tcl lets you assign default values:
+```tcl
+proc introduce {{name "stranger"}} {
+    puts "Hi, I'm $name."
+}
+```
+
+### Variable Scope:
+Vars defined inside a proc are local to that proc—unless you declare them `global` or use `upvar` for variable linkage.
+
+---
