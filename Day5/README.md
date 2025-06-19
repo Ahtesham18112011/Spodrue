@@ -88,9 +88,45 @@ puts "$OutputDirectory/$DesignName.final.synth.v"
 
 
 ```
+You're adding the final layer to your synthesis automation—executing the synthesis, checking its success, and post-processing the resulting netlist. Here's a breakdown of what your script does:
+
+---
+
+### 🛠 1. **Running the Yosys Synthesis Flow**
+```tcl
+if {[catch {exec yosys -s $OutputDirectory/$DesignName.ys >& $OutputDirectory/$DesignName.synthesis.log} msg]} { ... }
+```
+- Uses `exec` to run Yosys with your generated script.
+- Redirects both stdout and stderr into a log file.
+- Wraps the call in a `catch` block to detect synthesis failure.
+- On failure, it alerts the user and exits.
+- On success, it confirms completion.
+
+---
+
+### 2. **Filtering the Netlist**
+```tcl
+puts -nonewline $fileId [exec grep -v -w "*" $OutputDirectory/$DesignName.synth.v]
+```
+- Opens a temporary file `/tmp/1`.
+- Filters out lines containing only `*`, which are probably Yosys comments or metadata.
+- Writes the cleaned content to `/tmp/1`.
+
+---
+
+### 3. **Rewriting the Netlist**
+```tcl
+puts -nonewline $output [string map {"\\" ""} $line]
+```
+- Opens the cleaned temp file for reading.
+- Creates a final output file for STA/PNR.
+- Removes unnecessary backslashes (escaped line continuations).
+- Adds newline explicitly to preserve formatting.
 
 
+---
 
+# World of Procs
 
 
 
