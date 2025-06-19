@@ -162,13 +162,23 @@ proc add {a b} {
 }
 ```
 
-### Default Arguments:
-Tcl lets you assign default values:
-```tcl
-proc introduce {{name "stranger"}} {
-    puts "Hi, I'm $name."
-}
-```
-
-
+`
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
