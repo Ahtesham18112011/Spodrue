@@ -173,6 +173,76 @@ proc reopenStdout {file} {
 }
 ```
 
+This Tcl procedure `reopenStdout` is meant to redirect standard output (`stdout`) to a file of your choice. Here’s what it does:
+
+1. **`close stdout`** – Closes the current standard output stream. This is necessary before reopening it.
+2. **`open $file w`** – Opens the file passed as an argument in write mode (`w`) and implicitly assigns it to `stdout` since `stdout` was just closed.
+
+
+---
+
+```tcl
+proc set_multi_cpu_usage {args} {
+        array set options {-localCpu <num_of_threads> -help "" }
+        #foreach {switch value} [array get options] {
+        #puts "Option $switch is $value"
+        #}
+        while {[llength $args]} {
+        #puts "llength is [llength $args]"
+        #puts "lindex 0 of \"$args\" is [lindex $args 0]"
+                switch -glob -- [lindex $args 0] {
+                -localCpu {
+                           #puts "old args is $args"
+                           set args [lassign $args - options(-localCpu)]
+                           #puts "new args is \"$args\""
+                           puts "set_num_threads $options(-localCpu)"
+                          }
+                -help {
+                           #puts "old args is $args"
+                           set args [lassign $args - options(-help) ]
+                           #puts "new args is \"$args\""
+                           puts "Usage: set_multi_cpu_usage -localCpu <num_of_threads>"
+                      }
+                }
+        }
+}
+```
+
+
+###  What It Does
+
+It processes command-line style options from the `args` list and executes commands based on flags:
+
+- **`-localCpu <num_of_threads>`**  
+  Sets the number of threads to use—prints a message like `set_num_threads 4`.
+
+- **`-help`**  
+  Outputs usage information for how to use the command.
+
+---
+
+### How It Works (Line by Line)
+
+1. **`array set options {-localCpu <num_of_threads> -help "" }`**  
+   Initializes the `options` array with expected keys and their placeholders.
+
+2. **`while {[llength $args]}`**  
+   Continues looping while there are still unprocessed arguments.
+
+3. **`switch -glob -- [lindex $args 0]`**  
+   Peeks at the first argument and decides how to handle it.
+
+4. **`-localCpu` block**  
+   - Removes `-localCpu` and its value from `args` using `lassign`.
+   - Stores the value in `options(-localCpu)`.
+   - Prints out: `set_num_threads <value>`.
+
+5. **`-help` block**  
+   - Similarly, removes `-help` from `args` and outputs usage instructions.
+
+---
+
+
 
 
 
