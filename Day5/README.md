@@ -170,7 +170,5 @@ proc introduce {{name "stranger"}} {
 }
 ```
 
-### Variable Scope:
-Vars defined inside a proc are local to that proc—unless you declare them `global` or use `upvar` for variable linkage.
 
 ---
