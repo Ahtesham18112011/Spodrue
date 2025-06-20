@@ -673,7 +673,8 @@ puts "set_timing_fpath $sdc_dirname/$sdc_filename.timing"
 
 ---
 
-
+## TCL Sript for Converting the SDC file to the OpenTimer accepted format
+```tcl
 
 
 
