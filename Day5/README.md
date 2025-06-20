@@ -323,19 +323,355 @@ This simply puts the command "set_verilog_fpath $arg1"
 ---
 
 
+**5. read_sdc command** 
+```tcl
+proc read_sdc {arg1} {
+set sdc_dirname [file dirname $arg1]
+set sdc_filename [lindex [split [file tail $arg1] .] 0 ]
+set sdc [open $arg1 r]
+set tmp_file [open /tmp/1 w]
 
+puts -nonewline $tmp_file [string map {"\[" "" "\]" " "} [read $sdc]]     
+close $tmp_file
 
+#-----------------------------------------------------------------------------#
+#----------------converting create_clock constraints--------------------------#
+#-----------------------------------------------------------------------------#
 
+set tmp_file [open /tmp/1 r]
+set timing_file [open /tmp/3 w]
+set lines [split [read $tmp_file] "\n"]
+set find_clocks [lsearch -all -inline $lines "create_clock*"]
+foreach elem $find_clocks {
+	set clock_port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+	set clock_period [lindex $elem [expr {[lsearch $elem "-period"]+1}]]
+	set duty_cycle [expr {100 - [expr {[lindex [lindex $elem [expr {[lsearch $elem "-waveform"]+1}]] 1]*100/$clock_period}]}]
+	puts $timing_file "clock $clock_port_name $clock_period $duty_cycle"
+	}
+close $tmp_file
 
+#-----------------------------------------------------------------------------#
+#----------------converting set_clock_latency constraints---------------------#
+#-----------------------------------------------------------------------------#
 
+set find_keyword [lsearch -all -inline $lines "set_clock_latency*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_clocks"]+1}]]
+	if {![string match $new_port_name $port_name]} {
+        	set new_port_name $port_name
+        	set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+        	set delay_value ""
+        	foreach new_elem $delays_list {
+        		set port_index [lsearch $new_elem "get_clocks"]
+        		lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+		puts -nonewline $tmp2_file "\nat $port_name $delay_value"
+	}
+}
 
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
 
+#-----------------------------------------------------------------------------#
+#----------------converting set_clock_transition constraints------------------#
+#-----------------------------------------------------------------------------#
 
+set find_keyword [lsearch -all -inline $lines "set_clock_transition*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_clocks"]+1}]]
+        if {![string match $new_port_name $port_name]} {
+		set new_port_name $port_name
+		set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+        	set delay_value ""
+        	foreach new_elem $delays_list {
+        		set port_index [lsearch $new_elem "get_clocks"]
+        		lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+        	puts -nonewline $tmp2_file "\nslew $port_name $delay_value"
+	}
+}
 
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
 
+#-----------------------------------------------------------------------------#
+#----------------converting set_input_delay constraints-----------------------#
+#-----------------------------------------------------------------------------#
 
+set find_keyword [lsearch -all -inline $lines "set_input_delay*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+        if {![string match $new_port_name $port_name]} {
+                set new_port_name $port_name
+        	set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+		set delay_value ""
+        	foreach new_elem $delays_list {
+        		set port_index [lsearch $new_elem "get_ports"]
+        		lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+        	puts -nonewline $tmp2_file "\nat $port_name $delay_value"
+	}
+}
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
 
+#-----------------------------------------------------------------------------#
+#----------------converting set_input_transition constraints------------------#
+#-----------------------------------------------------------------------------#
 
+set find_keyword [lsearch -all -inline $lines "set_input_transition*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+        if {![string match $new_port_name $port_name]} {
+                set new_port_name $port_name
+        	set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+        	set delay_value ""
+        	foreach new_elem $delays_list {
+        		set port_index [lsearch $new_elem "get_ports"]
+        		lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+        	puts -nonewline $tmp2_file "\nslew $port_name $delay_value"
+	}
+}
+
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
+
+#-----------------------------------------------------------------------------#
+#---------------converting set_output_delay constraints-----------------------#
+#-----------------------------------------------------------------------------#
+
+set find_keyword [lsearch -all -inline $lines "set_output_delay*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+        if {![string match $new_port_name $port_name]} {
+                set new_port_name $port_name
+        	set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+        	set delay_value ""
+        	foreach new_elem $delays_list {
+        		set port_index [lsearch $new_elem "get_ports"]
+        		lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+        	puts -nonewline $tmp2_file "\nrat $port_name $delay_value"
+	}
+}
+
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
+
+#-----------------------------------------------------------------------------#
+#-------------------converting set_load constraints---------------------------#
+#-----------------------------------------------------------------------------#
+
+set find_keyword [lsearch -all -inline $lines "set_load*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+        set port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+        if {![string match $new_port_name $port_name]} {
+                set new_port_name $port_name
+        	set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*" ] ""]]
+        	set delay_value ""
+        	foreach new_elem $delays_list {
+        	set port_index [lsearch $new_elem "get_ports"]
+        	lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        	}
+        	puts -nonewline $timing_file "\nload $port_name $delay_value"
+	}
+}
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file  [read $tmp2_file]
+close $tmp2_file
+
+#-----------------------------------------------------------------------------#
+close $timing_file
+
+set ot_timing_file [open $sdc_dirname/$sdc_filename.timing w]
+set timing_file [open /tmp/3 r]
+while {[gets $timing_file line] != -1} {
+        if {[regexp -all -- {\*} $line]} {
+                set bussed [lindex [lindex [split $line "*"] 0] 1]
+                set final_synth_netlist [open $sdc_dirname/$sdc_filename.final.synth.v r]
+                while {[gets $final_synth_netlist line2] != -1 } {
+                        if {[regexp -all -- $bussed $line2] && [regexp -all -- {input} $line2] && ![string match "" $line]} {
+                        puts -nonewline $ot_timing_file "\n[lindex [lindex [split $line "*"] 0 ] 0 ] [lindex [lindex [split $line2 ";"] 0 ] 1 ] [lindex [split $line "*"] 1 ]"
+                        } elseif {[regexp -all -- $bussed $line2] && [regexp -all -- {output} $line2] && ![string match "" $line]} {
+                        puts -nonewline $ot_timing_file "\n[lindex [lindex [split $line "*"] 0 ] 0 ] [lindex [lindex [split $line2 ";"] 0 ] 1 ] [lindex [split $line "*"] 1 ]"
+                        }
+                }
+        } else {
+        puts -nonewline $ot_timing_file  "\n$line"
+        }
+}
+
+close $timing_file
+puts "set_timing_fpath $sdc_dirname/$sdc_filename.timing"
+}
+```
+---
+
+### **Step-by-Step Explanation**
+
+#### **1. File Setup and Preprocessing**
+```tcl
+set sdc_dirname [file dirname $arg1]
+set sdc_filename [lindex [split [file tail $arg1] .] 0 ]
+set sdc [open $arg1 r]
+set tmp_file [open /tmp/1 w]
+puts -nonewline $tmp_file [string map {"\[" "" "\]" " "} [read $sdc]]     
+close $tmp_file
+```
+- **Extract Directory and Filename**: 
+  - `file dirname $arg1` extracts the directory path of the SDC file.
+  - `file tail $arg1` gets the filename, and `split [file tail $arg1] .` splits it at the dot to extract the base filename (without extension).
+- **Read SDC File**: The SDC file is opened in read mode (`r`), and its contents are read.
+- **Preprocess SDC Content**:
+  - The `string map` command removes square brackets (`[` and `]`) from the SDC content, replacing them with empty strings or spaces. This simplifies parsing by removing Tcl/SDC-specific syntax that could complicate string processing.
+  - The processed content is written to a temporary file `/tmp/1` without a newline at the end (`-nonewline`).
+- **Close Temporary File**: The temporary file `/tmp/1` is closed.
+
+#### **2. Processing `create_clock` Constraints**
+```tcl
+set tmp_file [open /tmp/1 r]
+set timing_file [open /tmp/3 w]
+set lines [split [read $tmp_file] "\n"]
+set find_clocks [lsearch -all -inline $lines "create_clock*"]
+foreach elem $find_clocks {
+    set clock_port_name [lindex $elem [expr {[lsearch $elem "get_ports"]+1}]]
+    set clock_period [lindex $elem [expr {[lsearch $elem "-period"]+1}]]
+    set duty_cycle [expr {100 - [expr {[lindex [lindex $elem [expr {[lsearch $elem "-waveform"]+1}]] 1]*100/$clock_period}]}]
+    puts $timing_file "clock $clock_port_name $clock_period $duty_cycle"
+}
+close $tmp_file
+```
+- **Read Preprocessed File**: The temporary file `/tmp/1` is reopened in read mode, and its contents are split into lines (`\n`).
+- **Create Output File**: A new temporary file `/tmp/3` is opened in write mode to store the processed constraints.
+- **Find `create_clock` Constraints**: 
+  - `lsearch -all -inline $lines "create_clock*"` searches for lines starting with `create_clock`.
+- **Process Each `create_clock` Line**:
+  - Extracts the clock port name (the argument after `get_ports`).
+  - Extracts the clock period (the argument after `-period`).
+  - Calculates the duty cycle using the waveform argument (second value after `-waveform`), expressed as a percentage: `100 - (waveform[1] * 100 / period)`.
+  - Writes a line to `/tmp/3` in the format: `clock <port_name> <period> <duty_cycle>`.
+- **Close Temporary File**: `/tmp/1` is closed.
+
+#### **3. Processing `set_clock_latency` Constraints**
+```tcl
+set find_keyword [lsearch -all -inline $lines "set_clock_latency*"]
+set tmp2_file [open /tmp/2 w]
+set new_port_name ""
+foreach elem $find_keyword {
+    set port_name [lindex $elem [expr {[lsearch $elem "get_clocks"]+1}]]
+    if {![string match $new_port_name $port_name]} {
+        set new_port_name $port_name
+        set delays_list [lsearch -all -inline $find_keyword [join [list "*" " " $port_name " " "*"] ""]]
+        set delay_value ""
+        foreach new_elem $delays_list {
+            set port_index [lsearch $new_elem "get_clocks"]
+            lappend delay_value [lindex $new_elem [expr {$port_index-1}]]
+        }
+        puts -nonewline $tmp2_file "\nat $port_name $delay_value"
+    }
+}
+close $tmp2_file
+set tmp2_file [open /tmp/2 r]
+puts -nonewline $timing_file [read $tmp2_file]
+close $tmp2_file
+```
+- **Find `set_clock_latency` Constraints**: Searches for lines starting with `set_clock_latency`.
+- **Process Each Unique Clock**:
+  - Extracts the clock name (argument after `get_clocks`).
+  - Ensures each clock is processed only once by comparing with `new_port_name`.
+  - Collects all delay values for the same clock by searching for lines containing the clock name.
+  - Writes the result to `/tmp/2` in the format: `at <clock_name> <delay_values>`.
+- **Append to Timing File**: The contents of `/tmp/2` are appended to `/tmp/3` without a newline.
+- **Close Files**: `/tmp/2` is closed.
+
+#### **4. Processing `set_clock_transition` Constraints**
+This section is similar to the `set_clock_latency` processing but handles `set_clock_transition` constraints:
+- Finds lines starting with `set_clock_transition`.
+- Extracts the clock name and transition (slew) values.
+- Writes to `/tmp/2` in the format: `slew <clock_name> <transition_values>`.
+- Appends the contents to `/tmp/3`.
+
+#### **5. Processing `set_input_delay` Constraints**
+- Finds lines starting with `set_input_delay`.
+- Extracts the port name (after `get_ports`) and input delay values.
+- Writes to `/tmp/2` in the format: `at <port_name> <delay_values>`.
+- Appends to `/tmp/3`.
+
+#### **6. Processing `set_input_transition` Constraints**
+- Finds lines starting with `set_input_transition`.
+- Extracts the port name and transition (slew) values.
+- Writes to `/tmp/2` in the format: `slew <port_name> <transition_values>`.
+- Appends to `/tmp/3`.
+
+#### **7. Processing `set_output_delay` Constraints**
+- Finds lines starting with `set_output_delay`.
+- Extracts the port name and output delay values.
+- Writes to `/tmp/2` in the format: `rat <port_name> <delay_values>` (where `rat` likely stands for required arrival time).
+- Appends to `/tmp/3`.
+
+#### **8. Processing `set_load` Constraints**
+- Finds lines starting with `set_load`.
+- Extracts the port name and load values.
+- Writes to `/tmp/2` in the format: `load <port_name> <load_values>`.
+- Appends to `/tmp/3`.
+
+#### **9. Final Output and Bus Handling**
+```tcl
+set ot_timing_file [open $sdc_dirname/$sdc_filename.timing w]
+set timing_file [open /tmp/3 r]
+while {[gets $timing_file line] != -1} {
+    if {[regexp -all -- {\*} $line]} {
+        set bussed [lindex [lindex [split $line "*"] 0] 1]
+        set final_synth_netlist [open $sdc_dirname/$sdc_filename.final.synth.v r]
+        while {[gets $final_synth_netlist line2] != -1 } {
+            if {[regexp -all -- $bussed $line2] && [regexp -all -- {input} $line2] && ![string match "" $line]} {
+                puts -nonewline $ot_timing_file "\n[lindex [lindex [split $line "*"] 0 ] 0 ] [lindex [lindex [split $line2 ";"] 0 ] 1 ] [lindex [split $line "*"] 1 ]"
+            } elseif {[regexp -all -- $bussed $line2] && [regexp -all -- {output} $line2] && ![string match "" $line]} {
+                puts -nonewline $ot_timing_file "\n[lindex [lindex [split $line "*"] 0 ] 0 ] [lindex [lindex [split $line2 ";"] 0 ] 1 ] [lindex [split $line "*"] 1 ]"
+            }
+        }
+    } else {
+        puts -nonewline $ot_timing_file  "\n$line"
+    }
+}
+close $timing_file
+puts "set_timing_fpath $sdc_dirname/$sdc_filename.timing"
+```
+- **Create Final Timing File**: Opens `<sdc_dirname>/<sdc_filename>.timing` in write mode.
+- **Read Intermediate Timing File**: Reads `/tmp/3` line by line.
+- **Handle Bussed Signals**:
+  - Checks for lines containing an asterisk (`*`), indicating a bussed signal (e.g., `port[*]`).
+  - Opens the Verilog netlist file `<sdc_filename>.final.synth.v`.
+  - Searches for the bussed signal name in the netlist and checks if it corresponds to an `input` or `output` port.
+  - Replaces the bussed signal with the specific port name from the netlist and writes the modified line to the final timing file.
+- **Write Non-Bussed Lines**: Lines without an asterisk are written directly to the final timing file.
+- **Output Path**: Prints the path to the final timing file with the command `set_timing_fpath`.
+
+---
 
 
 
