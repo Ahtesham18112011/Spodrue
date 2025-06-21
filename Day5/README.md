@@ -789,8 +789,116 @@ puts $conf_file "report_worst_paths ..."
 
 ---
 
+## Quality Of Results (QOR) generation
+
+```tcl
+set time_elapsed_in_us [time {exec /home/vsduser/OpenTimer-1.0.5/bin/OpenTimer < $OutputDirectory/$DesignName.conf >& $OutputDirectory/$DesignName.results} 1]
+set time_elapsed_in_sec "[expr {[lindex $time_elapsed_in_us 0]/100000}]sec"
+puts "\nInfo: STA finished in $time_elapsed_in_sec seconds"
+puts "\nInfo: Refer to $OutputDirectory/$DesignName.results for warnings and errors"
+
+set worst_RAT_slack "-"
+set report_file [open $OutputDirectory/$DesignName.results r]
+set pattern {RAT}
+while {[gets $report_file line] != -1} {
+        if {[regexp $pattern $line]} {
+                set worst_RAT_slack "[expr {[lindex $line 3]/1000}]ns"
+                break
+        } else {
+        continue
+        }
+}
+close $report_file
+
+set report_file [open $OutputDirectory/$DesignName.results r]
+set count 0
+while {[gets $report_file line] != -1} {
+        incr count [regexp -all -- $pattern $line]
+}
+set Number_output_violations $count
+close $report_file
+
+set worst_negative_setup_slack "-"
+set report_file [open $OutputDirectory/$DesignName.results r] 
+set pattern {Setup}
+while {[gets $report_file line] != -1} {
+        if {[regexp $pattern $line]} {
+                set worst_negative_setup_slack "[expr {[lindex $line 3]/1000}]ns"
+                break
+        } else {
+        continue
+        }
+}
+close $report_file
+
+set report_file [open $OutputDirectory/$DesignName.results r]
+set count 0
+while {[gets $report_file line] != -1} {
+        incr count [regexp -all -- $pattern $line]
+}
+set Number_of_setup_violations $count
+close $report_file
 
 
+set worst_negative_hold_slack "-"
+set report_file [open $OutputDirectory/$DesignName.results r] 
+set pattern {Hold}
+while {[gets $report_file line] != -1} {
+        if {[regexp $pattern $line]} {
+                set worst_negative_hold_slack "[expr {[lindex $line 3]/1000}]ns"
+                break
+        } else {
+                continue
+        }
+}
+close $report_file
+
+set report_file [open $OutputDirectory/$DesignName.results r]
+set count 0
+while {[gets $report_file line] != -1} {
+        incr count [regexp -all -- $pattern $line]
+}
+set Number_of_hold_violations $count
+close $report_file
+
+
+
+set pattern {Num of gates}
+set report_file [open $OutputDirectory/$DesignName.results r] 
+while {[gets $report_file line] != -1} {
+        if {[regexp $pattern $line]} {
+                set Instance_count "[lindex [join $line " "] 4 ]"
+                break
+        } else {
+                continue
+        }
+}
+close $report_file
+puts "DesignName is \{$DesignName\}"
+puts "time_elapsed_in_sec is \{$time_elapsed_in_sec\}"
+puts "Instance_count is \{$Instance_count\}"
+puts "worst_negative_setup_slack is \{$worst_negative_setup_slack\}"
+puts "Number_of_setup_violations is \{$Number_of_setup_violations\}"
+puts "worst_negative_hold_slack is \{$worst_negative_hold_slack\}"
+puts "Number_of_hold_violations is \{$Number_of_hold_violations\}"
+puts "worst_RAT_slack is \{$worst_RAT_slack\}"
+puts "Number_output_violations is \{$Number_output_violations\}"
+
+puts "\n"
+
+puts "                                          ****PRELAYOUT TIMING RESULTS****                                        "
+set formatStr "%15s %15s %15s %15s %15s %15s %15s %15s %15s"
+
+puts [format $formatStr "----------" "-------" "--------------" "---------" "---------" "--------" "--------" "-------" "-------"]
+puts [format $formatStr "DesignName" "Runtime" "Instance Count" "WNS Setup" "FEP Setup" "WNS Hold" "FEP Hold" "WNS RAT" "FEP RAT"]
+puts [format $formatStr "----------" "-------" "--------------" "---------" "---------" "--------" "--------" "-------" "-------"]
+foreach design_name $DesignName runtime $time_elapsed_in_sec instance_count $Instance_count wns_setup $worst_negative_setup_slack fep_setup $Number_of_setup_violations wns_hold $worst_negative_hold_slack$
+        puts [format $formatStr $design_name $runtime $instance_count $wns_setup $fep_setup $wns_hold $fep_hold $wns_rat $fep_rat]
+}
+
+puts [format $formatStr "----------" "-------" "--------------" "---------" "---------" "--------" "--------" "-------" "-------"]
+puts "\n"
+```
 
 
 
