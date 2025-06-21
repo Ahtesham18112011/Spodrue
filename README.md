@@ -21,16 +21,10 @@ A unique User Interface (UI) that will take RTL netlist & SDC constraints as an 
 ---
 
 
-## 📥 Download
-
-[![Download Spodrue](https://img.shields.io/badge/Download-Spodrue-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/TCL_Workshop/raw/refs/heads/main/spodrue.zip)
-
-Click the button above to download Spodrue. Please refer to [INSTRUCTIONS](https://github.com/Ahtesham18112011/TCL_Workshop/blob/main/INSTRUCTIONS) for the instructions to run Spodrue.
-
----
 
 ## Table of Contents
 
+- [Download](#download)
 - [About](#about)
 - [Features](#features)
 - [Environment](#environment)
@@ -39,6 +33,14 @@ Click the button above to download Spodrue. Please refer to [INSTRUCTIONS](https
 - [Acknowledgements](#acknowledgements)
 
 ---
+
+
+## 📥 Download
+
+[![Download Spodrue](https://img.shields.io/badge/Download-Spodrue-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/TCL_Workshop/raw/refs/heads/main/spodrue.zip)
+
+Click the button above to download Spodrue. Please refer to [INSTRUCTIONS](https://github.com/Ahtesham18112011/TCL_Workshop/blob/main/INSTRUCTIONS) for the instructions to run Spodrue.
+
 
 ## About
 
