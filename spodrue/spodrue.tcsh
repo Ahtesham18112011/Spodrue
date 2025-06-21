@@ -36,6 +36,6 @@ if (! -f $argv[1] || $argv[1] == "-help") then
       endif
 else
 echo "\nSending the csv file to tcl script as argument" 
-   tclsh ui.tcl $argv[1]
+   tclsh spodrue.tcl $argv[1]
 
 endif
