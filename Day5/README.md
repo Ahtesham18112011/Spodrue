@@ -675,6 +675,57 @@ puts "set_timing_fpath $sdc_dirname/$sdc_filename.timing"
 
 ## TCL Sript for Converting the SDC file to the OpenTimer accepted format
 ```tcl
+puts "\nInfo: Timing Analysis started"
+puts "Initializing number of threads, libraries, sdc, verilog netlist paths"
+source /home/vsduser/vsdsynth/procs/reopenStdout.proc
+source /home/vsduser/vsdsynth/procs/set_num_threads.proc
+
+reopenStdout $OutputDirectory/$DesignName.conf
+set_multi_cpu_usage -localCpu 4
+source /home/vsduser/vsdsynth/procs/read_lib.proc
+read_lib -early $EarlyLibraryPath
+
+read_lib -late $LateLibraryPath
+
+source /home/vsduser/vsdsynth/procs/read_verilog.proc
+read_verilog $OutputDirectory/$DesignName.final.synth.v
+
+source /home/vsduser/vsdsynth/procs/read_sdc.proc
+read_sdc $OutputDirectory/$DesignName.sdc
+reopenStdout /dev/tty
+
+set enable_prelayout_timing 1
+
+if {$enable_prelayout_timing == 1} {
+puts "\nInfo: enable_prelayout_timing is $enable_prelayout_timing. Enabling zero-wire load parasitics"
+        set spef_file [open $OutputDirectory/$DesignName.spef w]
+        puts $spef_file "*SPEF \"IEEE 1481-1998\" "
+        puts $spef_file "*DESIGN \"$DesignName\" "
+        puts $spef_file "*DATE \"[clock format [clock seconds] -format {%a %b %d %I:%M:%S %Y}]\" "
+        puts $spef_file "*VENDOR \"TAU 2015 Contest\" "
+        puts $spef_file "*PROGRAM \"Benchmark Parasitic Generator\" "
+        puts $spef_file "*VERSION \"0.0\" "
+        puts $spef_file "*DESIGN_FLOW \"NETLIST_TYPE_VERILOG\" "
+        puts $spef_file "*DIVIDER / "
+        puts $spef_file "*DELIMITER : "
+        puts $spef_file "*BUS_DELIMITER \[ \] "
+        puts $spef_file "*T_UNIT 1 PS "
+        puts $spef_file "*C_UNIT 1 FF "
+        puts $spef_file "*R_UNIT 1 KOHM "
+        puts $spef_file "*L_UNIT 1 UH "
+
+}
+close $spef_file
+
+set conf_file [open $OutputDirectory/$DesignName.conf a]
+puts $conf_file "set_spef_fpath $OutputDirectory/$DesignName.spef"
+puts $conf_file "init_timer "
+puts $conf_file "report_timer "
+puts $conf_file "report_wns "
+puts $conf_file "report_worst_paths -numPaths 10000 "
+close $conf_file
+```
+
 
 
 
