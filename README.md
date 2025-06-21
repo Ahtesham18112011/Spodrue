@@ -1,9 +1,9 @@
 # Spodrue
-[![Download Spodrue](https://img.shields.io/badge/Day-1-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day1) 
+[![Download Spodrue](https://img.shields.io/badge/Day-1-brightblue?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day1) 
 [![Download Spodrue](https://img.shields.io/badge/Day-2-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day2)
-[![Download Spodrue](https://img.shields.io/badge/Day-3-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day3)
-[![Download Spodrue](https://img.shields.io/badge/Day-4-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day4)
-[![Download Spodrue](https://img.shields.io/badge/Day-5-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day5)
+[![Download Spodrue](https://img.shields.io/badge/Day-3-brightred?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day3)
+[![Download Spodrue](https://img.shields.io/badge/Day-4-brightyellow?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day4)
+[![Download Spodrue](https://img.shields.io/badge/Day-5-brightpurple?style=for-the-badge)](https://github.com/Ahtesham18112011/Spodrue/tree/main/Day5)
 
 
 
