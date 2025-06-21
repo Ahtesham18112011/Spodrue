@@ -1,8 +1,10 @@
-# TCL Workshop
+# Spodrue
+A unique User Interface (UI) that will take RTL netlist & SDC constraints as an input, and will generate sythnesized netlist & pre-layout timing report as an output. It uses Yosys open-source tool for synthesis and Opentimer to generate pre-layout timing reports.
+## 📥 Download
 
-This repository contains the details of what i learned from the TCL Workshop organized by VLSI System Design.
+[![Download Template](https://img.shields.io/badge/Download-Template-brightgreen?style=for-the-badge)](https://github.com/Ahtesham18112011/TCL_Workshop/raw/refs/heads/main/spodrue.zip)
 
-![Project Logo or Banner (optional)](https://www.vlsisystemdesign.com/wp-content/uploads/2025/04/tcl_banner1.png.webp)
+Click the button above to download the template file.
 
 ---
 
