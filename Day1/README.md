@@ -12,8 +12,6 @@ This day introduces us to the **Tool Command Language (TCL)** and explains us th
 ## Learning TCL language through a User Interface software
 This workshop teaches the TCL language through a UI (User Interface) software, which is capable of receiving input files (`.csv`), reading verilog files, `.lib` files and dumping the final results as a statistic table of pre-layout timings, synthesized netlist to the output file. Below is the first step to make this software:-
 
-### Task 1 to make the software
-1. Create command (for example vsdsynth) and pass `.csv` from UNIX shell to TCL script.
 
 ## Creating the command
 To create command type this in the terminal:-
