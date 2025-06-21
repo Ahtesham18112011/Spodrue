@@ -76,7 +76,7 @@ Run the command to run the UI in the Ubuntu terminal
 ./myfile.tcsh you_csv_file.csv
 ```
 
-![WhatsApp Image 2025-06-15 at 11 30 17](https://github.com/user-attachments/assets/bc70b982-5a01-4e9d-aa97-4a71063efafe)
+![WhatsApp Image 2025-06-21 at 14 41 39](https://github.com/user-attachments/assets/3079dc56-d2e3-4e1e-93f4-5156d487f81e)
 
 
 
