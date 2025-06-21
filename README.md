@@ -21,7 +21,13 @@ This repository contains the details of what i learned from the TCL Workshop org
 ## About
 
 This repository has a brief introduction to the Tool Command Language (TCL) and also to the Linux environment. In this workshop we learnt the TCL through developing a User Interface (UI) that receives input from a csv file and produces output in SDC format.
+```
+                                                                 / __/__  ___ ____/ /____  ____      
+                                                                 _\ \/ _ \/ _  / _  / __/ |/ / -_)    
+                                                                /___/ .__/\___/\_,_/_/  |___/\__/     
+                                                                   /_/                                
 
+```
 ## Features
 
 - Introduction to TCL
