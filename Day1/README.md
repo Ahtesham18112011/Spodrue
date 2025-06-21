@@ -1,5 +1,5 @@
 
-# Day 1: Introduction to TCL and VSDSYNTH Tool Box Usage
+# Day 1: Introduction to TCL
 This day introduces us to the **Tool Command Language (TCL)** and explains us the usage of the TCL language.
 
 ## What is TCL language?
