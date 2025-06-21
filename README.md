@@ -2,11 +2,11 @@
 
 
 
-                                                               **    ____             __                
+                                                                   ____             __                
                                                                   / __/__  ___ ____/ /____  ____      
                                                                  _\ \/ _ \/ _  / _  / __/ |/ / -_)    
                                                                 /___/ .__/\___/\_,_/_/  |___/\__/     
-                                                                   /_/                                **
+                                                                   /_/                                
 
 
 A unique User Interface (UI) that will take RTL netlist & SDC constraints as an input, and will generate sythnesized netlist & pre-layout timing report as an output. It uses Yosys open-source tool for synthesis and Opentimer to generate pre-layout timing reports.
