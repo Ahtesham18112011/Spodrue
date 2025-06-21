@@ -45,5 +45,5 @@ Ahtesham Ahmed – [Linkedin](https://www.linkedin.com/in/ahtesham-ahmed-7798453
 ## Acknowledgements
 
 - Open source developers
-- [Kunal Ghosh](https://www.linkedin.com/in/kunal-ghosh-vlsisystemdesign-com-28084836/)
+- A big Thanks to [Kunal Ghosh](https://www.linkedin.com/in/kunal-ghosh-vlsisystemdesign-com-28084836/) who taught me to build this UI.
 - [VLSI System Design](https://www.linkedin.com/in/vlsi-system-design-aa252365/)
