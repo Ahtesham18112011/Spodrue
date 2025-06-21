@@ -202,7 +202,6 @@ Run terminal:-
 ```bash
 ./myfile.tcsh you_csv_file.csv
 ```
-![Screenshot from 2025-06-15 11-58-42](https://github.com/user-attachments/assets/e2586a01-d9d3-49fd-8cc7-44567ff04fd2)
 
 
 
