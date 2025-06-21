@@ -30,6 +30,26 @@ So now we will create a UNIX shell command that will inform if the `.csv` file i
 
 ```tcsh
 #!/bin/tcsh -f
+
+
+
+
+
+
+
+echo "                                                                   ____             __                "
+echo "                                                                  / __/__  ___ ____/ /____  ____      "
+echo "                                                                 _\ \/ _ \/ _  / _  / __/ |/ / -_)    "
+echo "                                                                /___/ .__/\___/\_,_/_/  |___/\__/     "
+echo "                                                                   /_/                                "
+
+echo "\n                   A unique User Interface (UI) that will take RTL netlist & SDC constraints as an input, and will generate sythnesized netlist & pre-layout timing report as an output."
+echo "                                         It uses Yosys open-source tool for synthesis and Opentimer to generate pre-layout timing reports."
+
+
+
+
+
 if ($#argv == 0) then
     echo "Error: No csv file provided."
     exit 1
@@ -46,9 +66,11 @@ if (! -f $argv[1] || $argv[1] == "-help") then
       exit 0
       endif
 else
-   tclsh ui.tcl $argv[1]
+echo "\nSending the csv file to tcl script as argument" 
+  # tclsh ui.tcl $argv[1]
 
 endif
+
 
 ```
 
