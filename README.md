@@ -12,7 +12,6 @@ Click the button above to download Spodrue.
 
 - [About](#about)
 - [Features](#features)
-- [Installation](#installation)
 - [Environment](#environment)
 - [License](#license)
 - [Contact](#contact)
@@ -25,19 +24,14 @@ Click the button above to download Spodrue.
 This repository has a brief introduction to the Tool Command Language (TCL) and also to the Linux environment. In this workshop we learnt the TCL through developing a User Interface (UI) that receives input from a csv file and produces output in SDC format.
 
                                                                 
-```
+
 ## Features
 
 - Introduction to TCL
 - Code for the UI
 - Step by step guidance
 
-## Installation
 
-```bash
-git clone https://github.com/Ahtesham18112011/TCL_Workshop.git
-cd TCL_Workshop
-```
 
 ## License
 
