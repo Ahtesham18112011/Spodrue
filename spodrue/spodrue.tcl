@@ -170,10 +170,10 @@ set count [llength [read $tmp2_file]]
 close $tmp2_file
 if {$count > 2} {
 set inp_ports [concat [constraints get cell 0 $i]*]
-#puts "Info: Working on input bus $inp_ports for user debug"
+
 } else {
 set inp_ports [constraints get cell 0 $i]
-#puts "Info : Working on input bit $inp_ports for user debug"
+
 }
 	puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -rise -source_latency_included [constraints get cell $input_early_rise_delay_start $i] \[get_ports $inp_ports\]"
 	puts -nonewline $sdc_file "\nset_input_delay -clock \[get_clocks [constraints get cell $related_clock $i]\] -min -fall -source_latency_included [constraints get cell $input_early_fall_delay_start $i] \[get_ports $inp_ports\]"
@@ -194,17 +194,14 @@ set output_efd_start [lindex [lindex [constraints search rect $clock_start_colum
 set output_lrd_start [lindex [lindex [constraints search rect $clock_start_columns $output_ports_start [expr {$number_of_columns-1}] [expr {$number_of_rows-1}] late_rise_delay] 0 ] 0]
 set output_lfd_start [lindex [lindex [constraints search rect $clock_start_columns $output_ports_start [expr {$number_of_columns-1}] [expr {$number_of_rows-1}] late_fall_delay] 0 ] 0]
 
-#Finding column number starting for output realted clock in output section
 
 set output_related_clock [lindex [lindex [constraints search rect $clock_start_columns $output_ports_start [expr {$number_of_columns-1}] [expr {$number_of_rows-1}] clocks] 0 ] 0]
 
-#Finding column number starting for output load in output section
 
 set output_load_start [lindex [lindex [constraints search rect $clock_start_columns $output_ports_start [expr {$number_of_columns-1}] [expr {$number_of_rows-1}] load] 0 ] 0]
 
 
 
-#Setting varibales for actual output row start and end
 
 set i [expr {$output_ports_start+1}]
 set end_of_outputs [expr {$number_of_rows-1}]
@@ -248,14 +245,13 @@ set op_ports [constraints get cell 0 $i]
 #puts "Info : Working on output bit $op_ports for user debug"
 }
 
-#set_output_delay SDC command to set output latency values
+
 
 puts -nonewline $sdc_file "\nset_output_delay -clock \[get_clocks [constraints get cell $output_related_clock $i]\] -min -rise -source_latency_included [constraints get cell $output_erd_start $i] \[get_ports $op_ports\]"
 puts -nonewline $sdc_file "\nset_output_delay -clock \[get_clocks [constraints get cell $output_related_clock $i]\] -min -fall -source_latency_included [constraints get cell $output_efd_start $i] \[get_ports $op_ports\]"
 puts -nonewline $sdc_file "\nset_output_delay -clock \[get_clocks [constraints get cell $output_related_clock $i]\] -max -rise -source_latency_included [constraints get cell $output_lrd_start $i] \[get_ports $op_ports\]"
 puts -nonewline $sdc_file "\nset_output_delay -clock \[get_clocks [constraints get cell $output_related_clock $i]\] -max -fall -source_latency_included [constraints get cell $output_lfd_start $i] \[get_ports $op_ports\]"
 
-#set_load SDC command to set load values
 
 puts -nonewline $sdc_file "\nset_load [constraints get cell $output_load_start $i] \[get_ports $op_ports\]"
 
