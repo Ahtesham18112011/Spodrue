@@ -203,6 +203,7 @@ Run terminal:-
 ./myfile.tcsh you_csv_file.csv
 ```
 
+![Screenshot from 2025-06-22 10-13-28](https://github.com/user-attachments/assets/990327bf-690c-42be-8898-fb0cd5f2a0b6)
 
 
 
