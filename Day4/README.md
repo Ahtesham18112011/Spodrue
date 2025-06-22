@@ -300,6 +300,9 @@ This Tcl script is part of a flow for checking the module hierarchy of a hardwar
 
 ---
 
+## Running in terminal
+![Screenshot from 2025-06-22 10-36-56](https://github.com/user-attachments/assets/e4e6ef48-8d4b-4d8f-970e-9cb76123f6cb)
+
 
 
 
