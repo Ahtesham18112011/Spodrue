@@ -240,7 +240,9 @@ close $fileid
    close $fileid
    ```
    This writes the `hierarchy -check` command, which ensures that the design hierarchy is complete and valid. Then, it closes the file.
-   
+## Running in terminal
+
+
 ![Screenshot from 2025-06-18 17-16-14](https://github.com/user-attachments/assets/48b2e824-4f50-49e8-98ae-69563664fcad)
 
 ## Error handling script for hierarchy check
