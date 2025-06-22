@@ -76,6 +76,9 @@ Run in terminal:-
 ```bash
 ./myscript.tcl your_csv_file.csv
 ```
+![Screenshot from 2025-06-22 10-17-33](https://github.com/user-attachments/assets/564b4491-2c5d-4001-bbad-a9509a41a07c)
+
+
 View in the sdc file
 
 ![Screenshot from 2025-06-16 20-31-05](https://github.com/user-attachments/assets/74e0fb89-14fa-4698-8669-8921c303b7fa)
@@ -177,6 +180,9 @@ Run in the terminal:-
 ```bash
 yourdesign.tcl your_csv_file.csv
 ```
+![Screenshot from 2025-06-22 10-19-57](https://github.com/user-attachments/assets/704f16ff-6c3a-4fbd-825e-5c66a1c7b765)
+
+
 Observe outputs in sdc file
 
 ![Screenshot from 2025-06-16 20-37-46](https://github.com/user-attachments/assets/1be6f326-65cd-4417-8c2d-0799e144e342)
