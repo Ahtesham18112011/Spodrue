@@ -60,7 +60,7 @@ if (! -f $argv[1] || $argv[1] == "-help") then
 
       else
 
-      echo "Type the command ./ui.tcsh and write the csv file aside"
+      echo "Type the command ./spodrue.tcsh and write the csv file aside"
       exit 0
       endif
 else
